@@ -64,4 +64,16 @@ Invoke-Expression "& { $(Invoke-RestMethod https://aspire.dev/install.ps1) }"
 Write-Host "📌 Setting Windows Terminal as default terminal app..." -ForegroundColor Cyan
 wt --set-default-terminal WindowsTerminal
 
+Write-Host "🎛 Customizing Windows taskbar..." -ForegroundColor Cyan
+
+# Disable Widgets, use search icon only
+Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "TaskbarDa" -Value 0
+Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" -Name "SearchboxTaskbarMode" -Value 1
+
+# Restart Explorer to apply changes
+Stop-Process -Name explorer -Force
+Start-Process explorer.exe
+
+Write-Host "✅ Windows UI cleanup complete." -ForegroundColor Green
+
 Write-Host "`n✅ Setup complete!" -ForegroundColor Cyan
