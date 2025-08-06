@@ -2,9 +2,10 @@
 # Run as Administrator
 
 # Ensure elevation
-if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`
-    [Security.Principal.WindowsBuiltInRole] "Administrator")) {
-    Write-Warning "Please run this script as Administrator."
+if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(
+    [Security.Principal.WindowsBuiltInRole]::Administrator)) {
+    Write-Host "`n❌ This script must be run as Administrator. Please right-click and choose 'Run as Administrator'." -ForegroundColor Red
+    Read-Host -Prompt "Press Enter to exit"
     exit
 }
 
@@ -13,6 +14,9 @@ Write-Output "💻 Setting up your Windows dev machine..."
 # Update Winget first
 Write-Output "⬆️ Updating Winget..."
 winget upgrade --all --silent
+
+Write-Host "🔄 Installing latest PowerShell..." -ForegroundColor Cyan
+winget install --id Microsoft.PowerShell --source winget --silent --accept-package-agreements --accept-source-agreements
 
 # Install essential dev tools
 $apps = @(
@@ -54,7 +58,10 @@ if (-not (Get-Content $profilePath | Select-String -SimpleMatch "oh-my-posh init
     Write-Host "✅ PowerShell profile updated with Oh My Posh theme." -ForegroundColor Green
 }
 
-Write-Host "🚀 Installing Aspire CLI (native AOT version)..." -ForegroundColor Cyan
+Write-Host "🚀 Installing Aspire CLI..." -ForegroundColor Cyan
 Invoke-Expression "& { $(Invoke-RestMethod https://aspire.dev/install.ps1) }"
+
+Write-Host "📌 Setting Windows Terminal as default terminal app..." -ForegroundColor Cyan
+wt --set-default-terminal WindowsTerminal
 
 Write-Host "`n✅ Setup complete!" -ForegroundColor Cyan
