@@ -28,7 +28,8 @@ $apps = @(
     "Microsoft.AzureCLI",                  # Azure CLI
     "Microsoft.AzureVPNClient",            # Azure VPN Client
     "Microsoft.Azure.DevCLI",              # Azure Developer CLI
-    "Discord.Discord"                      # Discord
+    "Discord.Discord",                     # Discord
+    "Microsoft.Office"
 )
 
 foreach ($app in $apps) {
